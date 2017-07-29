@@ -294,11 +294,10 @@ public class Player extends Actor {
             }
         }
 
+        // jump
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if(this.isSolid) {
-                this.stepUp(-0.4F);
-            }
-
+            this.stepUpTimer = 5F;
+            this.stepUpLerp = -2F;
         }
 
 
@@ -1026,7 +1025,7 @@ public class Player extends Actor {
                 this.DoHotbarAction(5);
             }
 
-            if(input.keyEvents.contains(49)) {
+            if(input.keyEvents.contains(Input.Keys.U)) {
                 OverlayManager.instance.push(new CurrencyOverlay(this));
             }
 
@@ -1056,11 +1055,11 @@ public class Player extends Actor {
             }
 
             if(Game.isDebugMode) {
-                if(input.keyEvents.contains(39)) {
+                if(input.keyEvents.contains(Input.Keys.K)) {
                     OverlayManager.instance.push(new DebugOverlay(this));
-                } else if(input.keyEvents.contains(40)) {
+                } else if(input.keyEvents.contains(Input.Keys.NUMPAD_4)) {
                     Game.instance.level.down.changeLevel(level);
-                } else if(input.keyEvents.contains(38)) {
+                } else if(input.keyEvents.contains(Input.Keys.NUMPAD_6)) {
                     Game.instance.level.up.changeLevel(level);
                 }
             }
@@ -1857,8 +1856,10 @@ public class Player extends Actor {
 
     public float getWalkSpeed() {
         float baseSpeed = 0.1F + (float)this.stats.SPD * 0.015F;
+
+        // sprint
         if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-            baseSpeed = 0.25F;
+            baseSpeed = 0.25F + (float)this.stats.SPD * 0.015F;
         }
 
         if(this.statusEffects != null && this.statusEffects.size > 0) {

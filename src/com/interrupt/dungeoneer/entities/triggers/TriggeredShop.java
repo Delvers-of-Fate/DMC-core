@@ -30,13 +30,7 @@ public class TriggeredShop extends Trigger {
     public Array<ShopItem> items;
 
     @EditorProperty(group = "Currency")
-    public boolean platinumAllowed;
-    @EditorProperty(group = "Currency")
-    public boolean goldAllowed;
-    @EditorProperty(group = "Currency")
-    public boolean silverAllowed;
-    @EditorProperty(group = "Currency")
-    public boolean copperAllowed;
+    public TriggeredShop.AcceptedCurrency acceptedCurrency;
 
     public TriggeredShop() {
         this.shopType = TriggeredShop.ShopType.upgrades;
@@ -45,10 +39,7 @@ public class TriggeredShop extends Trigger {
         this.pausesGame = false;
         this.items = null;
 
-        this.platinumAllowed = false;
-        this.goldAllowed = false;
-        this.silverAllowed = false;
-        this.copperAllowed = true;
+        this.acceptedCurrency = AcceptedCurrency.GOLD;
 
         this.hidden = true;
         this.spriteAtlas = "editor";
@@ -124,12 +115,12 @@ public class TriggeredShop extends Trigger {
         this.items.removeAll(toRemove, true);
         ShopOverlay shopOverlay;
         if(previousOverlay != null) {
-            shopOverlay = new ShopOverlay(Game.instance.player, (String)null, (String)null, this.items, this.platinumAllowed, this.goldAllowed, this.silverAllowed, this.copperAllowed);
+            shopOverlay = new ShopOverlay(Game.instance.player, (String)null, (String)null, this.items, this.acceptedCurrency);
             shopOverlay.pausesGame = this.pausesGame;
             shopOverlay.timer = 1000.0F;
             OverlayManager.instance.replace(previousOverlay, shopOverlay);
         } else {
-            shopOverlay = new ShopOverlay(Game.instance.player, this.title, this.description, this.items, this.platinumAllowed, this.goldAllowed, this.silverAllowed, this.copperAllowed);
+            shopOverlay = new ShopOverlay(Game.instance.player, this.title, this.description, this.items, this.acceptedCurrency);
             shopOverlay.pausesGame = this.pausesGame;
             OverlayManager.instance.push(shopOverlay);
         }
@@ -145,6 +136,16 @@ public class TriggeredShop extends Trigger {
         armor;
 
         private ShopType() {
+        }
+    }
+
+    public static enum AcceptedCurrency {
+        PLATINUM,
+        GOLD,
+        SILVER,
+        COPPER;
+
+        private AcceptedCurrency() {
         }
     }
 }

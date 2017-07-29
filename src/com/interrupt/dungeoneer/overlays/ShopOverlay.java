@@ -21,6 +21,7 @@ import com.interrupt.dungeoneer.Audio;
 import com.interrupt.dungeoneer.annotations.EditorProperty;
 import com.interrupt.dungeoneer.entities.Item;
 import com.interrupt.dungeoneer.entities.Player;
+import com.interrupt.dungeoneer.entities.triggers.TriggeredShop;
 import com.interrupt.dungeoneer.game.Game;
 import com.interrupt.dungeoneer.gfx.TextureAtlas;
 import com.interrupt.dungeoneer.rpg.Stats;
@@ -40,40 +41,28 @@ public class ShopOverlay extends WindowOverlay {
     private Label lblTotalAmount;
     private Label lblGoldAmount;
     float rotOffset = 0.0F;
-
-    public boolean platinumAllowed;
-    public boolean goldAllowed;
-    public boolean silverAllowed;
-    public boolean copperAllowed;
+    private TriggeredShop.AcceptedCurrency acceptedCurrency;
 
     public ShopOverlay(Player player) {
         this.player = player;
     }
 
-    public ShopOverlay(Player player, String prefix, String title, String description, Array<ShopItem> items, Boolean platinumAllowed, Boolean goldAllowed, Boolean silverAllowed, Boolean copperAllowed) {
+    public ShopOverlay(Player player, String prefix, String title, String description, Array<ShopItem> items, TriggeredShop.AcceptedCurrency acceptedCurrency) {
         this.player = player;
         this.titleText = title;
         this.itemPrefix = prefix;
         this.descriptionText = description;
         this.items = items;
-
-        this.platinumAllowed = false;
-        this.goldAllowed = false;
-        this.silverAllowed = false;
-        this.copperAllowed = true;
+        this.acceptedCurrency = acceptedCurrency;
 
     }
 
-    public ShopOverlay(Player player, String title, String description, Array<ShopItem> items, Boolean platinumAllowed, Boolean goldAllowed, Boolean silverAllowed, Boolean copperAllowed) {
+    public ShopOverlay(Player player, String title, String description, Array<ShopItem> items, TriggeredShop.AcceptedCurrency acceptedCurrency) {
         this.player = player;
         this.titleText = title;
         this.descriptionText = description;
         this.items = items;
-
-        this.platinumAllowed = false;
-        this.goldAllowed = false;
-        this.silverAllowed = false;
-        this.copperAllowed = true;
+        this.acceptedCurrency = acceptedCurrency;
     }
 
     public void onShow() {
@@ -139,15 +128,40 @@ public class ShopOverlay extends WindowOverlay {
         Label lblGoldLabel = new Label(StringManager.get("overlays.ShopPause.yourGoldText"), (LabelStyle)this.skin.get(LabelStyle.class));
         lblGoldLabel.setAlignment(12);
         lblGoldLabel.setFontScale(0.75F);
-        this.lblGoldAmount = new Label(String.format("%d", new Object[]{Integer.valueOf(this.player.gold - this.getPurchaseCost())}), (LabelStyle)this.skin.get(LabelStyle.class));
+        this.lblGoldAmount = new Label(String.format("%d", new Object[]{Integer.valueOf(getCurrency() - this.getPurchaseCost())}), (LabelStyle)this.skin.get(LabelStyle.class));
         this.lblGoldAmount.setAlignment(16);
         this.lblGoldAmount.setFontScale(0.75F);
-        Image goldIcon = new Image(new TextureRegionDrawable(((TextureAtlas)TextureAtlas.cachedAtlases.get("item")).sprite_regions[89]));
-        goldIcon.setWidth(3.0F);
-        goldIcon.setHeight(3.0F);
-        goldIcon.setAlign(8);
+
+        int itemID;
+        switch (acceptedCurrency) {
+            case PLATINUM:
+                if(player.platinum < 5) { itemID = 90; } else { itemID = 91; }
+                break;
+
+            case GOLD:
+                if(player.gold < 5) { itemID = 88; } else { itemID = 89; }
+                break;
+
+            case SILVER:
+                if(player.silver < 5) { itemID = 94; } else { itemID = 95; }
+                break;
+
+            case COPPER:
+                if(player.copper < 5) { itemID = 92; } else { itemID = 93; }
+                break;
+
+            default:
+                itemID = 0;
+                break;
+        }
+
+        Image currencyIcon = new Image(new TextureRegionDrawable(((TextureAtlas)TextureAtlas.cachedAtlases.get("item")).sprite_regions[itemID]));
+
+        currencyIcon.setWidth(3.0F);
+        currencyIcon.setHeight(3.0F);
+        currencyIcon.setAlign(8);
         Table goldTable = new Table();
-        goldTable.add(goldIcon).width(20.0F).height(20.0F);
+        goldTable.add(currencyIcon).width(20.0F).height(20.0F);
         goldTable.add(this.lblGoldAmount);
         goldTable.pack();
         TextButton doneBtn = new TextButton(StringManager.get("overlays.ShopPause.doneButton"), (TextButtonStyle)this.skin.get(TextButtonStyle.class));
@@ -168,7 +182,28 @@ public class ShopOverlay extends WindowOverlay {
                         }
 
                         var10000 = ShopOverlay.this.player;
-                        var10000.gold -= item.cost.intValue();
+
+                        switch (acceptedCurrency) {
+                            case PLATINUM:
+                                var10000.platinum -= item.cost;
+                                break;
+
+                            case GOLD:
+                                var10000.gold -= item.cost;
+                                break;
+
+                            case SILVER:
+                                var10000.silver -= item.cost;
+                                break;
+
+                            case COPPER:
+                                var10000.copper -= item.cost;
+                                break;
+
+                            default:
+                                var10000.gold -= item.cost;
+                                break;
+                        }
                     } else if(item.upgrade != null) {
                         Stats var8 = ShopOverlay.this.player.stats;
                         var8.END += item.upgrade.stats.END;
@@ -183,7 +218,28 @@ public class ShopOverlay extends WindowOverlay {
                         var8 = ShopOverlay.this.player.stats;
                         var8.SPD += item.upgrade.stats.SPD;
                         var10000 = ShopOverlay.this.player;
-                        var10000.gold -= item.cost.intValue();
+
+                        switch (acceptedCurrency) {
+                            case PLATINUM:
+                                var10000.platinum -= item.cost;
+                                break;
+
+                            case GOLD:
+                                var10000.gold -= item.cost;
+                                break;
+
+                            case SILVER:
+                                var10000.silver -= item.cost;
+                                break;
+
+                            case COPPER:
+                                var10000.copper -= item.cost;
+                                break;
+
+                            default:
+                                var10000.gold -= item.cost;
+                                break;
+                        }
                     }
                 }
 
@@ -236,7 +292,7 @@ public class ShopOverlay extends WindowOverlay {
         value.setFontScale(0.75F);
         if(this.selected.contains(item, true)) {
             value.setColor(1.0F, 1.0F, 1.0F, 0.9F);
-        } else if(this.player.gold - this.getPurchaseCost() >= item.cost.intValue()) {
+        } else if(getCurrency() - this.getPurchaseCost() >= item.cost) {
             value.setColor(0.6F, 1.0F, 0.6F, 0.6F);
         } else {
             value.setColor(1.0F, 0.6F, 0.6F, 0.6F);
@@ -246,7 +302,7 @@ public class ShopOverlay extends WindowOverlay {
             public void clicked(InputEvent event, float x, float y) {
                 if(ShopOverlay.this.selected.contains(item, true)) {
                     ShopOverlay.this.selected.removeValue(item, true);
-                } else if(item.cost.intValue() <= ShopOverlay.this.player.gold - ShopOverlay.this.getPurchaseCost()) {
+                } else if(item.cost <= getCurrency() - ShopOverlay.this.getPurchaseCost()) {
                     ShopOverlay.this.selected.add(item);
                 }
 
@@ -289,5 +345,24 @@ public class ShopOverlay extends WindowOverlay {
         }
 
         return cost;
+    }
+
+    public int getCurrency() {
+        switch (acceptedCurrency) {
+            case PLATINUM:
+                return player.platinum;
+
+            case GOLD:
+                return player.gold;
+
+            case SILVER:
+                return player.silver;
+
+            case COPPER:
+                return player.copper;
+
+            default:
+                return player.gold;
+        }
     }
 }

@@ -57,17 +57,17 @@ public class CurrencyOverlay extends WindowOverlay {
         this.silverAmountLabel = new Label(Integer.toString(player.silver), this.skin);
         this.copperAmountLabel = new Label(Integer.toString(player.copper), this.skin);
 
-        int amount;
+        int amount = 0;
         if(player.platinum < 5) { amount = 90; } else { amount = 91; }
         Image platinumImage = new Image(new TextureRegionDrawable(com.interrupt.dungeoneer.gfx.TextureAtlas.cachedAtlases.get("item").sprite_regions[amount]));
 
         if(player.gold < 5) { amount = 88; } else { amount = 89; }
         Image goldImage = new Image(new TextureRegionDrawable(com.interrupt.dungeoneer.gfx.TextureAtlas.cachedAtlases.get("item").sprite_regions[amount]));
 
-        if(player.silver < 5) { amount = 92; } else { amount = 93; }
+        if(player.silver < 5) { amount = 94; } else { amount = 95; }
         Image silverImage = new Image(new TextureRegionDrawable(com.interrupt.dungeoneer.gfx.TextureAtlas.cachedAtlases.get("item").sprite_regions[amount]));
 
-        if(player.copper < 5) { amount = 94; } else { amount = 95; }
+        if(player.copper < 5) { amount = 92; } else { amount = 93; }
         Image copperImage = new Image(new TextureRegionDrawable(com.interrupt.dungeoneer.gfx.TextureAtlas.cachedAtlases.get("item").sprite_regions[amount]));
 
         contentTable.add(platinumImage).width(40.0F).height(40.0F).align(8);
