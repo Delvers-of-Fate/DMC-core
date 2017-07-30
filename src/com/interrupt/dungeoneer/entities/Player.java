@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-
 package com.interrupt.dungeoneer.entities;
 
 import com.badlogic.gdx.Gdx;
@@ -149,6 +144,8 @@ public class Player extends Actor {
     private static Vector3 pickEntityTemp1 = new Vector3();
     private static Vector3 pickEntityTemp2 = new Vector3();
 
+    private float jumpAmount = 1.5F;
+
     public Player() {
         this.isSolid = true;
         this.collision.set(0.2F, 0.2F, 0.65F);
@@ -294,12 +291,15 @@ public class Player extends Actor {
             }
         }
 
-        // jump
+        /// Jumping
+        ///
+        /// via DMC
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            this.stepUpTimer = 5F;
-            this.stepUpLerp = -2F;
+            if(this.isOnFloor) {
+                this.stepUp(jumpAmount);
+                this.z += jumpAmount;
+            }
         }
-
 
         if(this.isSolid && !level.isFree(this.x, this.nexty, this.z, this.collision, this.stepHeight, false, this.hitLoc)) {
             this.ya = 0.0F;
@@ -1058,9 +1058,9 @@ public class Player extends Actor {
                 if(input.keyEvents.contains(Input.Keys.K)) {
                     OverlayManager.instance.push(new DebugOverlay(this));
                 } else if(input.keyEvents.contains(Input.Keys.NUMPAD_4)) {
-                    Game.instance.level.down.changeLevel(level);
-                } else if(input.keyEvents.contains(Input.Keys.NUMPAD_6)) {
                     Game.instance.level.up.changeLevel(level);
+                } else if(input.keyEvents.contains(Input.Keys.NUMPAD_6)) {
+                    Game.instance.level.down.changeLevel(level);
                 }
             }
 
@@ -1857,7 +1857,9 @@ public class Player extends Actor {
     public float getWalkSpeed() {
         float baseSpeed = 0.1F + (float)this.stats.SPD * 0.015F;
 
-        // sprint
+        /// Sprinting
+        ///
+        /// via DMC
         if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
             baseSpeed = 0.25F + (float)this.stats.SPD * 0.015F;
         }
