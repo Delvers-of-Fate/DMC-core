@@ -16,4 +16,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Implemented healing ability in debug overlay
 - Replaced `DONE` with `BACK` in the debug overlay, and selecting something no longer closes the overlay
 - The `escape` and `enter` key behaviour has been changed
-- Default FOV is now 85°
+- Default FOV is now 80°
