@@ -144,7 +144,9 @@ public class Player extends Actor {
     private static Vector3 pickEntityTemp1 = new Vector3();
     private static Vector3 pickEntityTemp2 = new Vector3();
 
-    private float jumpAmount = 1.5F;
+    private float jumpModifier = 1.1F;
+    private boolean isSprinting = false;
+    private float sprintModifier = 0.15F;
 
     public Player() {
         this.isSolid = true;
@@ -231,6 +233,8 @@ public class Player extends Actor {
             this.hp = this.getMaxHp();
         }
 
+        isSprinting = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
+
         this.nextx = this.x + this.xa * delta;
         this.nexty = this.y + this.ya * delta;
         if(!this.inEditor) {
@@ -295,9 +299,9 @@ public class Player extends Actor {
         ///
         /// via DMC
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if(this.isOnFloor) {
-                this.stepUp(jumpAmount);
-                this.z += jumpAmount;
+            if (this.isOnFloor && this.statusEffects == null && !isSprinting) {
+                this.stepUp(jumpModifier);
+                this.z += jumpModifier;
             }
         }
 
@@ -1861,7 +1865,7 @@ public class Player extends Actor {
         ///
         /// via DMC
         if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-            baseSpeed = 0.25F + (float)this.stats.SPD * 0.015F;
+            baseSpeed = sprintModifier + (float)this.stats.SPD * 0.015F;
         }
 
         if(this.statusEffects != null && this.statusEffects.size > 0) {
