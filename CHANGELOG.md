@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Currency! Press `U` to access your money! Specify `acceptedCurrency` which defaults to `GOLD`
+- Currency! Press `U` to access your money! `acceptedCurrency` has also been added to `TriggeredShop` which defaults to `GOLD`
 - Platinum, Copper and Silver currency
 - Sprinting! Hold `left shift` in order to move faster
 - Jumping! Press `space` in order to jump
