@@ -721,7 +721,7 @@ public class Player extends Actor {
             if(Game.hud.dragging != null) {
                 this.touchingItem = true;
             } else if(Gdx.input.justTouched() && !attack && input.uiTouchPointer == null && input.lastTouchedPointer != null) {
-                Entity touching = this.pickEntity(level, Gdx.input.getX(input.lastTouchedPointer.intValue()), Gdx.input.getY(input.lastTouchedPointer.intValue()), 0.9F);
+                Entity touching = this.pickEntity(level, Gdx.input.getX(input.lastTouchedPointer), Gdx.input.getY(input.lastTouchedPointer), 0.9F);
                 if(touching != null) {
                     input.uiTouchPointer = input.lastTouchedPointer;
                 }
@@ -759,15 +759,15 @@ public class Player extends Actor {
             Entity centered = this.pickEntity(level, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0.7F);
             if(centered != null) {
                 if(centered instanceof Item && Math.abs(centered.xa) < 0.01F && Math.abs(centered.ya) < 0.01F && Math.abs(centered.za) < 0.01F) {
-                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.getItemText"), new Object[]{useText, ((Item)((Item)centered)).GetName() + "\n" + ((Item)((Item)centered)).GetInfoText()}), ((Item)((Item)centered)).GetTextColor());
+                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.getItemText"), useText, ((Item)(centered)).GetName() + "\n" + ((Item)centered).GetInfoText()), (((Item)centered)).GetTextColor());
                 } else if(centered instanceof Stairs) {
-                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.useText"), new Object[]{useText, ((Stairs)((Stairs)centered)).getUseText()}));
+                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.useText"), useText, (((Stairs)centered)).getUseText()));
                 } else if(centered instanceof Door) {
-                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.useText"), new Object[]{useText, ((Door)centered).getUseText()}));
+                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.useText"), useText, ((Door)centered).getUseText()));
                 } else if(centered instanceof Trigger) {
-                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.useText"), new Object[]{useText, ((Trigger)centered).getUseVerb()}));
+                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.useText"), useText, ((Trigger)centered).getUseVerb()));
                 } else if(centered instanceof ButtonModel) {
-                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.useText"), new Object[]{useText, ((ButtonModel)centered).useVerb}));
+                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.useText"), useText, ((ButtonModel)centered).useVerb));
                 }
             } else {
                 Ray ray = Game.camera.getPickRay((float)(Gdx.graphics.getWidth() / 2), (float)(Gdx.graphics.getHeight() / 2));
@@ -777,7 +777,7 @@ public class Player extends Actor {
                 int checky = (int)Math.floor((double)(ray.origin.z + projy));
                 Tile hit = level.getTile(checkx, checky);
                 if(hit instanceof ExitTile) {
-                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.exitDungeonText"), new Object[]{useText}));
+                    Game.ShowUseMessage(MessageFormat.format(StringManager.get("entities.Player.exitDungeonText"), useText));
                 }
             }
         }
@@ -813,8 +813,8 @@ public class Player extends Actor {
         if(Game.isMobile && !this.isDead && !isInOverlay) {
             xMod = 60.0F;
             if(input.isLeftTouched() && (!this.touchingItem || input.uiTouchPointer != input.leftPointer)) {
-                this.deltaX = input.getLeftTouchPosition().x - (float)Gdx.input.getX(input.leftPointer.intValue());
-                this.deltaY = input.getLeftTouchPosition().y - (float)Gdx.input.getY(input.leftPointer.intValue());
+                this.deltaX = input.getLeftTouchPosition().x - (float)Gdx.input.getX(input.leftPointer);
+                this.deltaY = input.getLeftTouchPosition().y - (float)Gdx.input.getY(input.leftPointer);
                 this.deltaX *= Math.abs(this.deltaX);
                 this.deltaY *= Math.abs(this.deltaY);
                 this.deltaX *= GameScreen.cDelta;
@@ -850,22 +850,22 @@ public class Player extends Actor {
             if(Game.hud.isAttackPressed() && (!this.touchingItem || input.uiTouchPointer != input.rightPointer)) {
                 this.deltaX = 0.0F;
                 this.deltaY = 0.0F;
-                Integer thisX = Integer.valueOf(0);
-                Integer thisY = Integer.valueOf(0);
+                Integer thisX = 0;
+                Integer thisY = 0;
                 if(input.isRightTouched()) {
-                    thisX = Integer.valueOf(Gdx.input.getX(input.rightPointer.intValue()));
-                    thisY = Integer.valueOf(Gdx.input.getY(input.rightPointer.intValue()));
+                    thisX = Gdx.input.getX(input.rightPointer);
+                    thisY = Gdx.input.getY(input.rightPointer);
                 } else if(Game.hud.isAttackPressed() && input.uiTouchPointer != null) {
-                    thisX = Integer.valueOf(Gdx.input.getX(input.uiTouchPointer.intValue()));
-                    thisY = Integer.valueOf(Gdx.input.getY(input.uiTouchPointer.intValue()));
+                    thisX = Gdx.input.getX(input.uiTouchPointer);
+                    thisY = Gdx.input.getY(input.uiTouchPointer);
                 }
 
                 if(this.lastDelta == null) {
-                    this.lastDelta = new Vector2((float)thisX.intValue(), (float)thisY.intValue());
+                    this.lastDelta = new Vector2((float) thisX, (float) thisY);
                 }
 
-                this.deltaX = (float)((int)this.lastDelta.x - thisX.intValue());
-                this.deltaY = (float)((int)this.lastDelta.y - thisY.intValue());
+                this.deltaX = (float)((int)this.lastDelta.x - thisX);
+                this.deltaY = (float)((int)this.lastDelta.y - thisY);
                 if(Options.instance != null && Options.instance.mouseInvert) {
                     this.deltaY *= -1.0F;
                 }
@@ -877,7 +877,7 @@ public class Player extends Actor {
                     this.rota += this.deltaX / 400.0F * Game.GetUiSize() / 85.0F;
                 }
 
-                this.lastDelta.set((float)thisX.intValue(), (float)thisY.intValue());
+                this.lastDelta.set((float) thisX, (float) thisY);
             }
 
             if(!Game.hud.isAttackPressed()) {
@@ -953,7 +953,7 @@ public class Player extends Actor {
                     }
                 } else if(held instanceof Armor && attack) {
                     Armor a = (Armor)held;
-                    this.ChangeHeldItem((Integer)null, true);
+                    this.ChangeHeldItem(null, true);
                     this.equip(a);
                 }
             } else {
@@ -973,7 +973,7 @@ public class Player extends Actor {
                     } else {
                         this.hasAttacked = true;
                         this.attackCharge = 0.0F;
-                        if(held instanceof Weapon && !(held instanceof Gun)) {
+                        if(!(held instanceof Gun)) {
                             this.playAttackAnimation((Weapon)held, 1.0F);
                         }
                     }
@@ -1043,7 +1043,7 @@ public class Player extends Actor {
             }
 
             if(Game.hotbar.gamepadPosition != null && controllerState.buttonEvents.contains(Buttons.HOTBAR_USE, true)) {
-                this.DoHotbarAction(Game.hotbar.gamepadPosition.intValue() + 1);
+                this.DoHotbarAction(Game.hotbar.gamepadPosition + 1);
                 Game.hotbar.gamepadPosition = null;
             }
 
@@ -1070,18 +1070,18 @@ public class Player extends Actor {
 
             if(controllerState.buttonEvents.contains(Buttons.HOTBAR_RIGHT, true)) {
                 if(Game.hotbar.gamepadPosition == null) {
-                    Game.hotbar.gamepadPosition = Integer.valueOf(0);
+                    Game.hotbar.gamepadPosition = 0;
                 } else {
-                    Game.hotbar.gamepadPosition = Integer.valueOf((Game.hotbar.gamepadPosition.intValue() + 1) % 6);
+                    Game.hotbar.gamepadPosition = (Game.hotbar.gamepadPosition + 1) % 6;
                 }
             } else if(controllerState.buttonEvents.contains(Buttons.HOTBAR_LEFT, true)) {
                 if(Game.hotbar.gamepadPosition == null) {
-                    Game.hotbar.gamepadPosition = Integer.valueOf(5);
+                    Game.hotbar.gamepadPosition = 5;
                 } else {
                     Hotbar var37 = Game.hotbar;
-                    var37.gamepadPosition = Integer.valueOf(var37.gamepadPosition.intValue() - 1);
-                    if(Game.hotbar.gamepadPosition.intValue() < 0) {
-                        Game.hotbar.gamepadPosition = Integer.valueOf(6 - Game.hotbar.gamepadPosition.intValue() - 2);
+                    var37.gamepadPosition = var37.gamepadPosition - 1;
+                    if(Game.hotbar.gamepadPosition < 0) {
+                        Game.hotbar.gamepadPosition = 6 - Game.hotbar.gamepadPosition - 2;
                     }
                 }
             }
@@ -1407,8 +1407,8 @@ public class Player extends Actor {
     }
 
     public Item dropItem(Integer invLocation, Level level, float throwPower) {
-        if(invLocation != null && invLocation.intValue() >= 0 && invLocation.intValue() < this.inventory.size) {
-            Item itm = (Item)this.inventory.get(invLocation.intValue());
+        if(invLocation != null && invLocation >= 0 && invLocation < this.inventory.size) {
+            Item itm = (Item)this.inventory.get(invLocation);
             this.dropItem(itm, level, throwPower);
             if(invLocation == this.selectedBarItem) {
                 this.selectedBarItem = null;
@@ -1648,19 +1648,19 @@ public class Player extends Actor {
     }
 
     public void wieldNextHotbarItem() {
-        int i = this.selectedBarItem == null?0:(this.selectedBarItem.intValue() + 1) % 6;
-        this.ChangeHeldItem(Integer.valueOf(i), true);
+        int i = this.selectedBarItem == null?0:(this.selectedBarItem + 1) % 6;
+        this.ChangeHeldItem(i, true);
     }
 
     public void wieldPreviousHotbarItem() {
-        int i = this.selectedBarItem == null?5:(this.selectedBarItem.intValue() + 5) % 6;
-        this.ChangeHeldItem(Integer.valueOf(i), true);
+        int i = this.selectedBarItem == null?5:(this.selectedBarItem + 5) % 6;
+        this.ChangeHeldItem(i, true);
     }
 
     public void dequip(Item item) {
         if(this.equipped(item)) {
             int itempos = this.inventory.indexOf(item, true);
-            if(this.selectedBarItem != null && this.selectedBarItem.intValue() == itempos) {
+            if(this.selectedBarItem != null && this.selectedBarItem == itempos) {
                 this.selectedBarItem = null;
             }
 
@@ -1672,11 +1672,11 @@ public class Player extends Actor {
     }
 
     public boolean equipped(Item item) {
-        return (item instanceof Weapon || item instanceof Decoration || item instanceof Potion || item instanceof Food) && this.GetHeldItem() == item?true:this.equippedItems.containsValue(item);
+        return (item instanceof Weapon || item instanceof Decoration || item instanceof Potion || item instanceof Food) && this.GetHeldItem() == item || this.equippedItems.containsValue(item);
     }
 
     public Item GetHeldItem() {
-        return this.heldItem != null && this.heldItem.intValue() >= 0 && this.heldItem.intValue() < this.inventory.size?(Item)this.inventory.get(this.heldItem.intValue()):null;
+        return this.heldItem != null && this.heldItem >= 0 && this.heldItem < this.inventory.size?(Item)this.inventory.get(this.heldItem):null;
     }
 
     public Item GetHeldOffhandItem() {
@@ -1701,7 +1701,7 @@ public class Player extends Actor {
         if(location >= 0 && location < this.inventory.size) {
             Item itm = (Item)this.inventory.get(location);
             if(itm != null) {
-                if(this.selectedBarItem != null && this.selectedBarItem.intValue() == location) {
+                if(this.selectedBarItem != null && this.selectedBarItem == location) {
                     if(this.equipped(itm) && (this.handAnimation == null || !this.handAnimation.playing)) {
                         this.dequip(itm);
                     } else {
@@ -1717,7 +1717,7 @@ public class Player extends Actor {
                         return;
                     }
 
-                    this.ChangeHeldItem(Integer.valueOf(location), true);
+                    this.ChangeHeldItem(location, true);
                 }
             }
 
@@ -1735,11 +1735,11 @@ public class Player extends Actor {
                     return Integer.toString(baseDamage);
                 }
 
-                return MessageFormat.format(StringManager.get("entities.Player.weaponAttackText"), new Object[]{Integer.valueOf(baseDamage), Integer.valueOf(randDamage + baseDamage)});
+                return MessageFormat.format(StringManager.get("entities.Player.weaponAttackText"), baseDamage, randDamage + baseDamage);
             }
 
             if(held instanceof Potion) {
-                return String.format("%.0f", new Object[]{Float.valueOf(((Potion)held).getExplosionDamageAmount())});
+                return String.format("%.0f", ((Potion) held).getExplosionDamageAmount());
             }
 
             if(held instanceof Decoration) {
@@ -1895,12 +1895,12 @@ public class Player extends Actor {
     }
 
     public void setMessageViews(String message, int views) {
-        this.messageViews.put(message, Float.valueOf((float)views));
+        this.messageViews.put(message, (float) views);
     }
 
     public int getMessageViews(String message) {
         Float views = (Float)this.messageViews.get(message);
-        return views == null?0:Math.round(views.floatValue());
+        return views == null?0:Math.round(views);
     }
 
     public int getDamageStatBoost() {
