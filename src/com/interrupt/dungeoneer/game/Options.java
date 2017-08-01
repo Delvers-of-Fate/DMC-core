@@ -89,7 +89,7 @@ public class Options {
         this.headBobEnabled = true;
         this.shadowsEnabled = true;
         this.key_use = 33;
-        this.key_attack = 62;
+       // this.key_attack = 62;
         this.key_forward = 51;
         this.key_backward = 47;
         this.key_strafe_left = 29;
