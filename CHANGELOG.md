@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+- You can no longer jump when dead
+- You can now prohibit, and adjust the modifier for running and sprinting
+
+### Changed
+- Dropping currency changed to 20, from 10
+
 ## [0.1.0] - 2017-08-01
 ### Added
 - Currency! Press `U` to access your money! `acceptedCurrency` has also been added to `TriggeredShop` which defaults to `GOLD`

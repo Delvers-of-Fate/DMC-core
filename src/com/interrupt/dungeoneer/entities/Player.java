@@ -144,9 +144,11 @@ public class Player extends Actor {
     private static Vector3 pickEntityTemp1 = new Vector3();
     private static Vector3 pickEntityTemp2 = new Vector3();
 
-    private float jumpModifier = 1.1F;
-    private boolean isSprinting = false;
-    private float sprintModifier = 0.15F;
+    public float jumpModifier = 1.1F;
+    public float sprintModifier = 0.15F;
+    public boolean isSprinting = false;
+    public boolean allowSprint = true;
+    public boolean allowJump = true;
 
     public Player() {
         this.isSolid = true;
@@ -154,6 +156,11 @@ public class Player extends Actor {
         this.dropSound = "drops/drop_soft.mp3";
         this.hidden = true;
         this.mass = 2.0F;
+
+        this.jumpModifier = jumpModifier;
+        this.sprintModifier = sprintModifier;
+        this.allowSprint = allowSprint;
+        this.allowJump = allowJump;
     }
 
     public Player(Game game) {
@@ -166,6 +173,11 @@ public class Player extends Actor {
         this.dropSound = "drops/drop_soft.mp3";
         this.mass = 2.0F;
         game.player = this;
+
+        this.jumpModifier = jumpModifier;
+        this.sprintModifier = sprintModifier;
+        this.allowSprint = allowSprint;
+        this.allowJump = allowJump;
     }
 
     public void makeStartingInventory() {
@@ -299,7 +311,7 @@ public class Player extends Actor {
         ///
         /// via DMC
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (this.isOnFloor && this.statusEffects == null && !isSprinting) {
+            if (this.allowJump && this.isOnFloor && this.statusEffects == null && !isSprinting && !isDead) {
                 this.stepUp(jumpModifier);
                 this.z += jumpModifier;
             }
@@ -1864,7 +1876,7 @@ public class Player extends Actor {
         /// Sprinting
         ///
         /// via DMC
-        if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+        if(allowSprint && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
             baseSpeed = sprintModifier + (float)this.stats.SPD * 0.015F;
         }
 

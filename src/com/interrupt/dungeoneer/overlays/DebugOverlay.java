@@ -367,19 +367,19 @@ public class DebugOverlay extends WindowOverlay {
 
         currency.add(new Platinum());
         currency.add(new Platinum(5));
-        currency.add(new Platinum(10));
+        currency.add(new Platinum(20));
         currency.add(new Item(1F, 1F, 0, null, "")); // empty
         currency.add(new Gold());
         currency.add(new Gold(5));
-        currency.add(new Gold(10));
+        currency.add(new Gold(20));
         currency.add(new Item(1F, 1F, 0, null, "")); // empty
         currency.add(new Silver());
         currency.add(new Silver(5));
-        currency.add(new Silver(10));
+        currency.add(new Silver(20));
         currency.add(new Item(1F, 1F, 0, null, "")); // empty
         currency.add(new Copper());
         currency.add(new Copper(5));
-        currency.add(new Copper(10));
+        currency.add(new Copper(20));
 
         HashMap<String, Array<Item>> armors = new HashMap();
         Iterator var10 = Game.instance.itemManager.armor.entrySet().iterator();
