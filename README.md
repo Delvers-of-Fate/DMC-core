@@ -10,3 +10,4 @@ Visit the [wiki](https://github.com/Council-Of-The-Delverers/DMC-core/wiki) for 
 # Installation
 - Download the mod from [the releases](https://github.com/Council-Of-The-Delverers/DMC-core/releases)
 - Override the files inside `delver.jar`
+- (Optional) override the files inside `DelvEdit.jar`
