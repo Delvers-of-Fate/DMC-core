@@ -10,13 +10,10 @@ import com.interrupt.managers.ItemManager;
 public class TriggeredItem extends Trigger {
 
     @EditorProperty(group = "Accepted Item")
-    public Item.ItemCondition itemCondition;
-    @EditorProperty(group = "Accepted Item")
     public String itemName;
 
     public TriggeredItem() {
         this.triggerType = TriggerType.PLAYER_TOUCHED;
-        this.itemCondition = Item.ItemCondition.normal;
         this.itemName = null;
     }
 
