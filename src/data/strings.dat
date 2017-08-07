@@ -2605,8 +2605,23 @@
         "comment":""
     },
     "screens.ConfirmExitScreen.message":{
+        "class": "com.interrupt.dungeoneer.game.LocalizedString",
+        "localizedName": "Are you sure that you want to close the game?",
+        "comment": ""
+    },
+    "message.jump.notOnFloor":{
         "class":"com.interrupt.dungeoneer.game.LocalizedString",
-        "localizedName":"Are you sure that you want to close the game?",
-        "comment":""
+        "localizedName":"You must be on a floor to jump!",
+        "comment":"Message shown when the player isn't on a floor and tries to jump"
+    },
+    "message.general.hasStatusEffects":{
+        "class":"com.interrupt.dungeoneer.game.LocalizedString",
+        "localizedName":"You can't do that whilst having active effects!",
+        "comment":"Message shown when the player tries to jump / sprint whilst having effects active"
+    },
+    "message.jump.isSprinting":{
+        "class":"com.interrupt.dungeoneer.game.LocalizedString",
+        "localizedName":"You can't sprint and jump at the same time!",
+        "comment":"Message shown when the player tries to sprint and jump at the same time"
     }
 }

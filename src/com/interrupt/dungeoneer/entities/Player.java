@@ -314,6 +314,12 @@ public class Player extends Actor {
             if (this.allowJump && this.isOnFloor && this.statusEffects == null && !isSprinting && !isDead) {
                 this.stepUp(jumpModifier);
                 this.z += jumpModifier;
+            } else if(!this.isOnFloor) {
+                Game.ShowMessage(StringManager.get("message.jump.notOnFloor"), 2, 0.2F);
+            } else if(this.statusEffects != null) {
+                Game.ShowMessage(StringManager.get("message.general.hasStatusEffects"), 2, 0.2F);
+            } else if(isSprinting) {
+                Game.ShowMessage(StringManager.get("message.jump.isSprinting"), 2, 0.2F);
             }
         }
 
@@ -1876,8 +1882,12 @@ public class Player extends Actor {
         /// Sprinting
         ///
         /// via DMC
-        if(allowSprint && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-            baseSpeed = sprintModifier + (float)this.stats.SPD * 0.015F;
+        if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            if(allowSprint && this.statusEffects == null) {
+                baseSpeed = sprintModifier + (float)this.stats.SPD * 0.015F;
+            } else if(this.statusEffects != null) {
+                Game.ShowMessage(StringManager.get("message.general.hasStatusEffects"), 2, 0.2F);
+            }
         }
 
         if(this.statusEffects != null && this.statusEffects.size > 0) {

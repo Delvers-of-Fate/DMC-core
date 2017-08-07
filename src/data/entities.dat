@@ -508,6 +508,7 @@
 			"Message": { class: com.interrupt.dungeoneer.entities.triggers.TriggeredMessage },
 			"GameOver": { class: com.interrupt.dungeoneer.entities.triggers.TriggeredGameOver },
 			"Button": { class: com.interrupt.dungeoneer.entities.triggers.ButtonModel },
+			"TriggeredItem": { "class": "com.interrupt.dungeoneer.entities.triggers.TriggeredItem" },
 			"Lever": {
 				class: com.interrupt.dungeoneer.entities.Group,
 				entities: [
