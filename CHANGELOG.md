@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - You can no longer jump when dead
 - You can now prohibit, and adjust the modifier for running and sprinting
 - `TriggeredItem`, triggers when the player is holding the same item set in the properties
-- You can no longer spring whilst having active effects
+- You can no longer sprint whilst having active effects
 - Added messages when trying to jump & sprint
 
 ### Changed
