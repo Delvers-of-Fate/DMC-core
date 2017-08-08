@@ -2619,9 +2619,9 @@
         "localizedName":"You can't do that whilst having active effects!",
         "comment":"Message shown when the player tries to jump / sprint whilst having effects active"
     },
-    "message.jump.isSprinting":{
+    "message.general.isAttacking":{
         "class":"com.interrupt.dungeoneer.game.LocalizedString",
-        "localizedName":"You can't sprint and jump at the same time!",
-        "comment":"Message shown when the player tries to sprint and jump at the same time"
+        "localizedName":"You can't attack and do that at the same time!",
+        "comment":"Message shown when the player tries to sprint or jump at the same time as they're in combat"
     }
 }

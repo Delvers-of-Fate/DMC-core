@@ -99,6 +99,7 @@ public class Player extends Actor {
     public final int inventorySize = 24;
     public Item hovering = null;
     private boolean attackButtonWasPressed = false;
+    private boolean isAttacking = false;
     float walkVel = 0.05F;
     float walkSpeed = 0.15F;
     float minWalkSpeed = 0.01F;
@@ -146,7 +147,6 @@ public class Player extends Actor {
 
     public float jumpModifier = 1.1F;
     public float sprintModifier = 0.15F;
-    public boolean isSprinting = false;
     public boolean allowSprint = true;
     public boolean allowJump = true;
 
@@ -245,8 +245,6 @@ public class Player extends Actor {
             this.hp = this.getMaxHp();
         }
 
-        isSprinting = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
-
         this.nextx = this.x + this.xa * delta;
         this.nexty = this.y + this.ya * delta;
         if(!this.inEditor) {
@@ -311,15 +309,15 @@ public class Player extends Actor {
         ///
         /// via DMC
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (this.allowJump && this.isOnFloor && this.statusEffects == null && !isSprinting && !isDead) {
+            if (this.allowJump && this.isOnFloor && this.statusEffects == null && !isDead && !isAttacking) {
                 this.stepUp(jumpModifier);
                 this.z += jumpModifier;
             } else if(!this.isOnFloor) {
                 Game.ShowMessage(StringManager.get("message.jump.notOnFloor"), 2, 0.2F);
             } else if(this.statusEffects != null) {
                 Game.ShowMessage(StringManager.get("message.general.hasStatusEffects"), 2, 0.2F);
-            } else if(isSprinting) {
-                Game.ShowMessage(StringManager.get("message.jump.isSprinting"), 2, 0.2F);
+            } else if(isAttacking) {
+                Game.ShowMessage(StringManager.get("message.general.isAttacking"), 2, 0.2F);
             }
         }
 
@@ -549,7 +547,7 @@ public class Player extends Actor {
     }
 
     public void die() {
-        Gdx.app.log("DelverGame", "Oh noes :( Player is dying!");
+        Gdx.app.log("DelverGame", "Player died");
         Array<LerpFrame> deathFrames = new Array();
         this.floating = false;
         if(!this.inwater) {
@@ -644,6 +642,8 @@ public class Player extends Actor {
                 this.tapLength = null;
             }
         }
+
+        isAttacking = attack;
 
         this.lastZ = this.z;
         float controllerXMod;
@@ -1883,10 +1883,12 @@ public class Player extends Actor {
         ///
         /// via DMC
         if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-            if(allowSprint && this.statusEffects == null) {
+            if(allowSprint && this.statusEffects == null && !isAttacking) {
                 baseSpeed = sprintModifier + (float)this.stats.SPD * 0.015F;
             } else if(this.statusEffects != null) {
                 Game.ShowMessage(StringManager.get("message.general.hasStatusEffects"), 2, 0.2F);
+            } else if(isAttacking) {
+                Game.ShowMessage(StringManager.get("message.general.isAttacking"), 2, 0.2F);
             }
         }
 
