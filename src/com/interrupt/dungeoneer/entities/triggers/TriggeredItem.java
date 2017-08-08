@@ -1,11 +1,10 @@
 package com.interrupt.dungeoneer.entities.triggers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import com.interrupt.dungeoneer.Audio;
 import com.interrupt.dungeoneer.annotations.EditorProperty;
-import com.interrupt.dungeoneer.entities.Item;
 import com.interrupt.dungeoneer.game.Game;
-import com.interrupt.managers.ItemManager;
 
 public class TriggeredItem extends Trigger {
 
@@ -19,15 +18,18 @@ public class TriggeredItem extends Trigger {
 
     @Override
     public void doTriggerEvent(String value) {
-        if (this.itemName != null) {
-            ItemManager manager = Game.instance.itemManager;
-            String holdingItem = Game.instance.player.GetHeldItem().GetName();
-            if (holdingItem != null && itemName.equals(holdingItem)) {
-                Audio.playPositionedSound(this.triggerSound, new Vector3(this.x, this.y, this.z), 0.8F, 11.0F);
-                Game.instance.level.trigger(this, this.triggersId, this.triggerValue);
-            }
+        String holdingItem;
 
+        try {
+            holdingItem = Game.instance.player.GetHeldItem().GetName();
+        } catch (Exception ex) {
+            holdingItem = null;
+            Gdx.app.log("Delver", "Player is holding null?");
         }
-        super.doTriggerEvent(value);
+
+        if (holdingItem != null && holdingItem.equals(itemName)) {
+            Audio.playPositionedSound(this.triggerSound, new Vector3(this.x, this.y, this.z), 0.8F, 11.0F);
+            Game.instance.level.trigger(this, this.triggersId, this.triggerValue);
+        }
     }
 }
