@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `TriggeredItem`, triggers when the player is holding the same item set in the properties
 - You can no longer sprint whilst having active effects
 - Added messages when trying to jump & sprint
+- Merged strings from Delver-Unlimited
 
 ### Changed
 - Dropping currency changed to 20, from 10
