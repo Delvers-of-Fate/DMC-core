@@ -29,6 +29,8 @@ import com.interrupt.dungeoneer.ui.UiSkin;
 import com.interrupt.helpers.ShopItem;
 import com.interrupt.managers.ItemManager;
 import com.interrupt.managers.StringManager;
+
+import java.text.MessageFormat;
 import java.util.Iterator;
 
 public class ShopOverlay extends WindowOverlay {
@@ -85,6 +87,9 @@ public class ShopOverlay extends WindowOverlay {
     }
 
     protected Table makeContent() {
+
+        String paddedButtonText = " {0} ";
+
         int windowWidth = 200;
         this.buttonOrder.clear();
         Table contentTable = new Table();
@@ -164,7 +169,7 @@ public class ShopOverlay extends WindowOverlay {
         goldTable.add(currencyIcon).width(20.0F).height(20.0F);
         goldTable.add(this.lblGoldAmount);
         goldTable.pack();
-        TextButton doneBtn = new TextButton(StringManager.get("overlays.ShopPause.doneButton"), (TextButtonStyle)this.skin.get(TextButtonStyle.class));
+        TextButton doneBtn = new TextButton(MessageFormat.format(paddedButtonText, StringManager.get("overlays.ShopPause.doneButton")), (TextButtonStyle)this.skin.get(TextButtonStyle.class));
         contentTable.add(doneBtn).align(8);
         contentTable.add(goldTable).align(16);
         doneBtn.addListener(new ClickListener() {
