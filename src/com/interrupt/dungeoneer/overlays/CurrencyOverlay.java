@@ -9,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.interrupt.dungeoneer.Audio;
 import com.interrupt.dungeoneer.entities.Player;
+import com.interrupt.dungeoneer.gfx.TextureAtlas;
 
 public class CurrencyOverlay extends WindowOverlay {
 
@@ -57,29 +59,29 @@ public class CurrencyOverlay extends WindowOverlay {
         this.silverAmountLabel = new Label(Integer.toString(player.silver), this.skin);
         this.copperAmountLabel = new Label(Integer.toString(player.copper), this.skin);
 
-        int amount = 0;
-        if(player.platinum < 5) { amount = 90; } else { amount = 91; }
-        Image platinumImage = new Image(new TextureRegionDrawable(com.interrupt.dungeoneer.gfx.TextureAtlas.cachedAtlases.get("item").sprite_regions[amount]));
+        int tex = 0;
+        if(player.platinum < 5) { tex = 90; } else { tex = 91; }
+        Image platinumImage = new Image(new TextureRegionDrawable(TextureAtlas.cachedAtlases.get("item").sprite_regions[tex]));
 
-        if(player.gold < 5) { amount = 88; } else { amount = 89; }
-        Image goldImage = new Image(new TextureRegionDrawable(com.interrupt.dungeoneer.gfx.TextureAtlas.cachedAtlases.get("item").sprite_regions[amount]));
+        if(player.gold < 5) { tex = 88; } else { tex = 89; }
+        Image goldImage = new Image(new TextureRegionDrawable(TextureAtlas.cachedAtlases.get("item").sprite_regions[tex]));
 
-        if(player.silver < 5) { amount = 94; } else { amount = 95; }
-        Image silverImage = new Image(new TextureRegionDrawable(com.interrupt.dungeoneer.gfx.TextureAtlas.cachedAtlases.get("item").sprite_regions[amount]));
+        if(player.silver < 5) { tex = 94; } else { tex = 95; }
+        Image silverImage = new Image(new TextureRegionDrawable(TextureAtlas.cachedAtlases.get("item").sprite_regions[tex]));
 
-        if(player.copper < 5) { amount = 92; } else { amount = 93; }
-        Image copperImage = new Image(new TextureRegionDrawable(com.interrupt.dungeoneer.gfx.TextureAtlas.cachedAtlases.get("item").sprite_regions[amount]));
+        if(player.copper < 5) { tex = 92; } else { tex = 93; }
+        Image copperImage = new Image(new TextureRegionDrawable(TextureAtlas.cachedAtlases.get("item").sprite_regions[tex]));
 
-        contentTable.add(platinumImage).width(40.0F).height(40.0F).align(8);
+        contentTable.add(platinumImage).width(40.0F).height(40.0F).align(Align.left);
         contentTable.add(platinumAmountLabel).padLeft(2.0F).width(45.0F);
         contentTable.row();
-        contentTable.add(goldImage).width(40.0F).height(40.0F).align(8);
+        contentTable.add(goldImage).width(40.0F).height(40.0F).align(Align.left);
         contentTable.add(goldAmountLabel).width(45.0F);
         contentTable.row();
-        contentTable.add(silverImage).width(40.0F).height(40.0F).align(8);
+        contentTable.add(silverImage).width(40.0F).height(40.0F).align(Align.left);
         contentTable.add(silverAmountLabel).padLeft(2.0F).width(45.0F);
         contentTable.row();
-        contentTable.add(copperImage).width(40.0F).height(40.0F).align(8);
+        contentTable.add(copperImage).width(40.0F).height(40.0F).align(Align.left);
         contentTable.add(copperAmountLabel).padLeft(2.0F).width(45.0F);
         contentTable.row();
         contentTable.add(this.doneBtn);
