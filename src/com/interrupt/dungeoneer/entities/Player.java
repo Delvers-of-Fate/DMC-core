@@ -150,6 +150,8 @@ public class Player extends Actor {
     public boolean allowSprint = true;
     public boolean allowJump = true;
 
+    public float flySpeed = 0.6F;
+
     public Player() {
         this.isSolid = true;
         this.collision.set(0.2F, 0.2F, 0.65F);
@@ -927,7 +929,6 @@ public class Player extends Actor {
         xMod = (float)((double)this.xm * Math.cos((double)this.rot) + (double)this.zm * Math.sin((double)this.rot)) * this.walkSpeed * delta;
         float yMod = (float)((double)this.zm * Math.cos((double)this.rot) - (double)this.xm * Math.sin((double)this.rot)) * this.walkSpeed * delta;
         if(this.floating) {
-            float flySpeed = 0.6F;
             if(!this.isOnFloor && !this.isOnEntity) {
                 xMod = GameManager.renderer.camera.direction.x * this.zm * flySpeed;
                 yMod = GameManager.renderer.camera.direction.z * this.zm * flySpeed;
@@ -1076,18 +1077,28 @@ public class Player extends Actor {
                 }
             }
 
-            if(Game.isDebugMode) {
-                if(input.keyEvents.contains(Input.Keys.K)) {
+            if (Game.isDebugMode) {
+                if (input.keyEvents.contains(Input.Keys.K)) {
                     OverlayManager.instance.push(new DebugOverlay(this));
-                } else if(input.keyEvents.contains(Input.Keys.NUMPAD_4)) {
+                } else if (input.keyEvents.contains(Input.Keys.NUMPAD_4)) {
                     Game.instance.level.up.changeLevel(level);
-                } else if(input.keyEvents.contains(Input.Keys.NUMPAD_6)) {
+                } else if (input.keyEvents.contains(Input.Keys.NUMPAD_6)) {
                     Game.instance.level.down.changeLevel(level);
-                } else if(input.keyEvents.contains(Input.Keys.NUMPAD_5)) {
+                } else if (input.keyEvents.contains(Input.Keys.NUMPAD_5)) {
                     Game.instance.player.maxHp = 100;
                     Game.instance.player.hp = 100;
                     Game.ShowMessage("Gave HP!", 1, 0.2F);
-            }
+                } else if (input.keyEvents.contains(Input.Keys.V)) {
+                    Game.instance.player.isSolid = !Game.instance.player.isSolid;
+                    Game.instance.player.floating = !Game.instance.player.isSolid;
+                    Game.ShowMessage("Toggled noclip!", 1, 0.2F);
+                } else if (input.keyEvents.contains(Input.Keys.C)) {
+                    Game.instance.level.entities.clear();
+                    Game.ShowMessage("Killed all entities!", 1, 0.2F);
+                } else if (input.keyEvents.contains(Input.Keys.X)) {
+                    Game.drawDebugBoxes = !Game.drawDebugBoxes;
+                    Game.ShowMessage("Toggled debug boxes!", 1, 0.2F);
+                }
             }
 
             if(controllerState.buttonEvents.contains(Buttons.HOTBAR_RIGHT, true)) {
@@ -1882,17 +1893,19 @@ public class Player extends Actor {
 
     public float getWalkSpeed() {
         float baseSpeed = 0.1F + (float)this.stats.SPD * 0.015F;
-
+        flySpeed = 0.6F;
         /// Sprinting
         ///
         /// via DMC
         if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-            if(allowSprint && this.statusEffects == null && !isAttacking) {
+            if(allowSprint && this.statusEffects == null && !isAttacking && !floating) {
                 baseSpeed = sprintModifier + (float)this.stats.SPD * 0.015F;
             } else if(this.statusEffects != null) {
                 Game.ShowMessage(StringManager.get("message.general.hasStatusEffects"), 2, 0.2F);
             } else if(isAttacking) {
                 Game.ShowMessage(StringManager.get("message.general.isAttacking"), 2, 0.2F);
+            } else if(floating) {
+                flySpeed = 1.7F;
             }
         }
 

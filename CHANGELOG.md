@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - You can no longer sprint whilst having active effects
 - Added messages when trying to jump & sprint
 - Merged strings from Delver-Unlimited
-- Pressing `Numpad 5` when debugging mode is enabled will now set the max hp and hp to 100
+- Sprinting whilst flying
+- Pressing down the key `Numpad 5` sets your hp to 100, `V` toggles noclip, `C` kills all entities and `X` toggles debug boxes - only if debugging mode is enabled
 
 ### Changed
 - Dropping currency changed to 20, from 10
