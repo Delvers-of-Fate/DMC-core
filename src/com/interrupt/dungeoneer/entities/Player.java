@@ -1083,7 +1083,11 @@ public class Player extends Actor {
                     Game.instance.level.up.changeLevel(level);
                 } else if(input.keyEvents.contains(Input.Keys.NUMPAD_6)) {
                     Game.instance.level.down.changeLevel(level);
-                }
+                } else if(input.keyEvents.contains(Input.Keys.NUMPAD_5)) {
+                    Game.instance.player.maxHp = 100;
+                    Game.instance.player.hp = 100;
+                    Game.ShowMessage("Gave HP!", 1, 0.2F);
+            }
             }
 
             if(controllerState.buttonEvents.contains(Buttons.HOTBAR_RIGHT, true)) {
