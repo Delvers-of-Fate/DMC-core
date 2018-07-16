@@ -140,10 +140,8 @@ public class TriggeredShop extends Trigger {
     }
 
     public static enum AcceptedCurrency {
-        PLATINUM,
+        EMBER,
         GOLD,
-        SILVER,
-        COPPER;
 
         private AcceptedCurrency() {
         }
